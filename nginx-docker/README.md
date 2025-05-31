@@ -1,68 +1,68 @@
-Ansible Role: NGINX (LEMP Stack - NGINX Container Setup)
-This Ansible role sets up an NGINX Docker container as part of a LEMP(Linux,Nginx,Mysql, and python) stack. It creates a configuration directory, copies an NGINX config template, and launches the container with specific settings.
+# NGINX Ansible Role
 
-What This Role Does
-Creates a directory for NGINX configuration files.
+This role sets up an NGINX Docker container as part of a LEMP(Linux, Nginx, Mysql, and Python) stack, with custom configuration, read-only mounted volumes, and Docker networking.
 
-Copies an NGINX configuration file from a Jinja2 template.
+---
 
-Starts an NGINX container using the official Docker image.
+## What It Does
 
-Default Variables
-The following default variables are expected and can be overridden as needed:
+* Creates the configuration directory:
 
-yaml
-Copy
-Edit
+  * `/etc/nginx/sites-available/lemp`
+* Copies an NGINX config template (`nginx.conf.j2`) to the config path
+* Runs an `nginx:{{ NGINX_VERSION }}` Docker container with:
+
+  * Port mapping (`{{ NGINX_PORT }}:80`)
+  * Read-only volume mount
+  * Docker network connection (`{{ NETWORK }}`)
+
+---
+
+## Variables
+
+Define in your playbook or inventory:
+
+```yaml
 PATH: /etc/nginx/sites-available/lemp
 NGINX_VERSION: latest
 NGINX_PORT: 2380
 NETWORK: lempnet
-Description of Variables
-Variable	Description
-PATH	Filesystem path to store the NGINX config
-NGINX_VERSION	Version of the NGINX image (e.g., latest, 1.25)
-NGINX_PORT	Host port mapped to container port 80
-NETWORK	Docker network the container should join
+```
 
-Tags
-You can use tags to execute specific parts of the role:
+---
 
-nginx-dir: Only create the configuration directory
+## Usage
 
-nginx-templates: Only copy the NGINX config file
+In your playbook:
 
-nginx-run: Only start the Docker container
-
-Example Playbook
-yaml
-Copy
-Edit
+```yaml
 - hosts: localhost
   become: yes
+  vars:
+    PATH: /etc/nginx/sites-available/lemp
+    NGINX_VERSION: latest
+    NGINX_PORT: 2380
+    NETWORK: lempnet
   roles:
-    - role: your_role_name
-      vars:
-        PATH: /etc/nginx/sites-available/lemp
-        NGINX_VERSION: latest
-        NGINX_PORT: 2380
-        NETWORK: lempnet
-Requirements
-Docker installed on the host
+    - nginx
+```
 
-Docker SDK for Python (pip install docker)
+Run:
 
-The Docker network lempnet must exist before running the role. You can create it with:
+```bash
+ansible-playbook playbook.yml
+```
 
-bash
-Copy
-Edit
-docker network create lempnet
-Template File
-Ensure you have a Jinja2 template named nginx.conf.j2 in your templates/ directory.
+---
 
-License
-MIT
+## Tags
 
-Author
-Ali9K
+* `nginx-dir`
+* `nginx-templates`
+* `nginx-run`
+
+Run specific tags with:
+
+```bash
+ansible-playbook playbook.yml --tags nginx-run
+```

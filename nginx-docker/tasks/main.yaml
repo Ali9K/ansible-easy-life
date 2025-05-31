@@ -14,6 +14,12 @@
     force: yes
   tags: nginx-templates
 
+- name: Create Docker network
+  docker_network:
+    name: "{{ NETWORK }}"
+    state: present
+    tags: docker-network
+
 - name: NGINX container
   docker_container:
     name: nginx
