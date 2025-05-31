@@ -1,7 +1,3 @@
-Sure! Here's a shorter and more concise `README.md` for your MySQL Ansible role:
-
----
-
 # MySQL Ansible Role
 
 This role sets up a MySQL Docker container with custom configuration, persistent storage, and networking.
