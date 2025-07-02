@@ -1,0 +1,11 @@
+---
+- name: Setup Docker and ensure service is running
+  hosts: all
+  become: yes
+  roles:
+    - docker 
+
+- name: Deploy and start NetBox containers
+  hosts: all
+  roles:
+    - netbox
