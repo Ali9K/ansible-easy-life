@@ -70,7 +70,7 @@ services:
       - MM_PLUGINSETTINGS_ENABLE=${MM_PLUGINSETTINGS_ENABLE}
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.mattermost.rule=Host(`chat.jalinuxy.ir`) && PathPrefix(`/`)"
+      - "traefik.http.routers.mattermost.rule=Host(`chat.alch.com`) && PathPrefix(`/`)"
       - "traefik.http.routers.mattermost.entrypoints=web-secure"
       - "traefik.http.routers.mattermost.tls.certresolver=le"
       - "traefik.http.services.mattermost.loadbalancer.server.port=8065"
