@@ -1,9 +1,0 @@
----
-- name: Uninstall old versions
-  apt:
-    name: "{{ item }}"
-    state: absent
-  loop: "{{ packages_to_remove }}"
-        
-- name: Include install-docker
-  include_tasks: install-docker.yaml
