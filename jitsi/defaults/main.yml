@@ -1,0 +1,6 @@
+---
+jitsi_dir: /jitsi
+
+jitsi_docker_dir: /jitsi/docker
+
+compose_name: docker-compose.yml

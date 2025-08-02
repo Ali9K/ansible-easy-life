@@ -1,0 +1,56 @@
+---
+- name: Create Jitsi directory
+  file:
+    path: "{{ jitsi_dir }}"
+    state: directory
+    mode: '0755'
+    recurse: yes
+  tags:
+  - jitsi
+  - jitsi-dir
+
+- name: Create Jitsi docker directory
+  file:
+    path: "{{ jitsi_docker_dir }}"
+    state: directory
+    mode: '0755'
+    recurse: yes
+  tags:
+  - jitsi
+  - jitsi-docker-dir
+
+- name: Copy Compose file
+  copy:
+    src: "{{ compose_name }}"
+    dest: "{{ jitsi_docker_dir }}"
+    mode: '0640'
+  tags:
+  - jitsi
+  - copy-compose
+
+- name: Copy .env file
+  copy:
+    src: .env
+    dest: "{{ jitsi_docker_dir }}"
+    mode: '0640'
+  tags:
+  - jitsi
+  - copy-env
+  
+- name: Pull jitsi Docker images
+  community.docker.docker_compose_v2:
+    project_src: "{{ jitsi_docker_dir }}"
+    pull: always
+  tags:
+  - jitsi
+  - pull-jitsi-images
+
+- name: Start jitsi with Docker Compose
+  community.docker.docker_compose_v2:
+    project_name: jitsi
+    project_src: "{{ jitsi_docker_dir }}"
+    state: present  
+    remove_orphans: true
+  tags:
+  - jitsi
+  - run-jitsi-container
